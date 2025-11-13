@@ -1,0 +1,232 @@
+<?php
+
+namespace App\Http\Controllers\Direktur\Kehadiran;
+
+use PDF;
+use App\Exports\IzinKeluarExport;
+use App\Http\Controllers\Controller;
+use App\Models\IzinKeluar;
+use App\Models\LogIzinKeluar;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+
+class DirekturIzinKeluarController extends Controller
+{
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $perPage = $request->input('length', 10);
+            $search = $request->input('search', '');
+
+            $query = IzinKeluar::join('user as u1', 'izin_keluar.user_id', '=', 'u1.id')
+                ->join('user as u2', 'izin_keluar.atasan_id', '=', 'u2.id')
+                ->select([
+                    'izin_keluar.id as izin_id',
+                    'izin_keluar.user_id',
+                    'izin_keluar.atasan_id',
+                    'izin_keluar.tgl_izin',
+                    'izin_keluar.jam_keluar',
+                    'izin_keluar.jam_kembali',
+                    'izin_keluar.keperluan',
+                    'izin_keluar.status',
+                    'izin_keluar.tahun',
+                    'izin_keluar.is_deleted',
+                    'u1.name as nama_karyawan',
+                    'u2.name as nama_atasan',
+                ])
+                ->where('izin_keluar.is_deleted', '1')
+                ->orderBy('izin_keluar.id', 'desc');
+
+
+            if ($request->has('start_date') && $request->has('end_date')) {
+                $start_date = $request->start_date;
+                $end_date = $request->end_date;
+                $query->whereBetween('izin_keluar.tgl_izin', [$start_date, $end_date]);
+            }
+
+            if ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('u1.name', 'LIKE', "%{$search}%");
+                });
+            }
+
+            if ($request->has('status') && !empty($request->status)) {
+                $query->where('izin_keluar.status', $request->status);
+            }
+
+            $totalRecords = $query->count();
+
+            $data = $query->paginate($perPage);
+
+            // Tambahkan kolom aksi
+            $dataWithActions = $data->map(function ($item) {
+                $resultid = $item->izin_id ?? '';
+
+                // Cek status: 2 = bisa diubah, selain itu tidak bisa
+                if (($item->status ?? 0) == 3) {
+                    $diterimaButton = '
+            <button type="button"
+                class="btn btn-outline-success btn-diterima"
+                data-diterima="' . e($resultid) . '">
+            <i class="fas fa-check"></i>
+        </button>
+        ';
+
+                    $ditolakButton = '
+            <button type="button"
+                class="btn btn-outline-danger btn-ditolak"
+                data-ditolak="' . e($resultid) . '">
+            <i class="fas fa-times"></i>
+        </button>
+        ';
+                } else {
+                    // Status lain: tampilkan badge, tombol hapus hilang
+                    $diterimaButton = '<span class="badge badge-secondary">Tidak Bisa Diperbaharui</span>';
+                    $ditolakButton = '';
+                }
+
+                // Gabungkan tombol menjadi satu kolom aksi
+                $item->aksi = $diterimaButton . $ditolakButton;
+
+                return $item;
+            });
+
+
+            return response()->json([
+                'draw' => $request->input('draw'),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $totalRecords,
+                'data' => $dataWithActions,
+            ]);
+        }
+
+        return view('direktur.kehadiran.izin-keluar.index');
+    }
+
+    public function generatepdf(Request $request)
+    {
+        $query = IzinKeluar::join('user as u1', 'izin_keluar.user_id', '=', 'u1.id')
+            ->join('user as u2', 'izin_keluar.atasan_id', '=', 'u2.id')
+            ->select([
+                'izin_keluar.id as izin_id',
+                'izin_keluar.user_id',
+                'izin_keluar.atasan_id',
+                'izin_keluar.tgl_izin',
+                'izin_keluar.jam_keluar',
+                'izin_keluar.jam_kembali',
+                'izin_keluar.keperluan',
+                'izin_keluar.status',
+                'izin_keluar.tahun',
+                'izin_keluar.is_deleted',
+                'u1.name as nama_karyawan',
+                'u2.name as nama_atasan',
+            ])
+            ->where('izin_keluar.is_deleted', '1')
+            ->orderBy('izin_keluar.id', 'desc');
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $query->whereBetween('izin_keluar.tgl_izin', [$start_date, $end_date]);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('izin_keluar.status', $request->status);
+        }
+
+        $izins = $query->orderBy('izin_keluar.id', 'desc')->get();
+
+        $pdf = PDF::loadview('direktur.kehadiran.izin-keluar.export-pdf', ['izins' => $izins])->setPaper('A4', 'potrait');
+        return $pdf->stream('data-izin-keluar.pdf');
+    }
+
+    public function generateexcel(Request $request)
+    {
+        $query = IzinKeluar::join('user as u1', 'izin_keluar.user_id', '=', 'u1.id')
+            ->join('user as u2', 'izin_keluar.atasan_id', '=', 'u2.id')
+            ->select([
+                'izin_keluar.id as izin_id',
+                'izin_keluar.user_id',
+                'izin_keluar.atasan_id',
+                'izin_keluar.tgl_izin',
+                'izin_keluar.jam_keluar',
+                'izin_keluar.jam_kembali',
+                'izin_keluar.keperluan',
+                'izin_keluar.status',
+                'izin_keluar.tahun',
+                'izin_keluar.is_deleted',
+                'u1.name as nama_karyawan',
+                'u2.name as nama_atasan',
+            ])
+            ->where('izin_keluar.is_deleted', '1')
+            ->orderBy('izin_keluar.id', 'desc');
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $query->whereBetween('izin_keluar.tgl_izin', [$start_date, $end_date]);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('izin_keluar.status', $request->status);
+        }
+
+        $data = $query->orderBy('izin_keluar.id', 'desc')->get();
+
+        return Excel::download(new IzinKeluarExport($data), 'data-izin-keluar.xlsx');
+    }
+
+    public function diterima($id)
+    {
+        $users = Auth::user();
+        $carbons = Carbon::now();
+        $izins = IzinKeluar::where('id', $id)->where('is_deleted', '1')->orderBy('id', 'desc')->first();
+
+        $izins->update([
+            'status' => '4',
+            'updated_at' => $carbons,
+            'updated_by' => $users->name,
+        ]);
+
+        LogIzinKeluar::create([
+            'izin_keluar_id' => $id,
+            'aktivitas' => 'Menyetujui Izin Keluar karyawan',
+            'user' => $users->name,
+            'tanggal' => $carbons->toDateString(),
+            'waktu_dibuat' => $carbons,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Selamat ! Anda berhasil menyetujui Izin Keluar karyawan',
+        ]);
+    }
+
+    public function ditolak($id)
+    {
+        $users = Auth::user();
+        $carbons = Carbon::now();
+        $izins = IzinKeluar::where('id', $id)->where('is_deleted', '1')->orderBy('id', 'desc')->first();
+
+        $izins->update([
+            'status' => '0',
+            'updated_at' => $carbons,
+            'updated_by' => $users->name,
+        ]);
+
+        LogIzinKeluar::create([
+            'izin_keluar_id' => $id,
+            'aktivitas' => 'Menolak Izin Keluar karyawan',
+            'user' => $users->name,
+            'tanggal' => $carbons->toDateString(),
+            'waktu_dibuat' => $carbons,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Selamat ! Anda berhasil menolak Izin Keluar karyawan',
+        ]);
+    }
+}

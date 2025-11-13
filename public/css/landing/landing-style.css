@@ -1,0 +1,795 @@
+:root {
+    --main-color: #00A8B5;
+    /* biru toska */
+    --accent-color: #FF7043;
+    /* oranye coral */
+    --light-bg: #f9fbfc;
+    --dark-text: #222;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* ===== NAVBAR ===== */
+/* ===== MODERN NAVBAR STYLE ===== */
+.modern-navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.4s ease;
+}
+
+.modern-navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand span {
+    color: var(--main-color);
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar .nav-link {
+    color: #333;
+    margin-left: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.navbar .nav-link::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.navbar .nav-link:hover::before,
+.navbar .nav-link.active::before {
+    width: 60%;
+}
+
+.navbar .nav-link:hover {
+    color: var(--accent-color);
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efek hover pada dropdown item */
+.dropdown-item {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.dropdown-item:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+    transform: translateX(5px);
+}
+
+/* Atur posisi dropdown agar tidak terlalu menempel ke navbar */
+.navbar .dropdown-menu {
+    margin-top: 10px !important;
+    /* Tambah jarak ke bawah */
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.25s ease;
+}
+
+/* Sedikit animasi muncul */
+.navbar .dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(5px);
+}
+
+/* Efek awal (sembunyi) agar muncul halus */
+.navbar .dropdown-menu {
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+
+
+/* ===== HERO SECTION ===== */
+#hero {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#hero .carousel-item {
+    height: 100vh;
+    transition: opacity 1s ease-in-out;
+}
+
+#hero img {
+    height: 100vh;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(60%) contrast(105%);
+    transition: transform 8s ease-in-out, filter 1s ease-in-out;
+}
+
+/* Efek zoom lambat pada gambar saat aktif */
+#hero .carousel-item.active img {
+    transform: scale(1.08);
+}
+
+/* Caption */
+#hero .carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    animation: fadeInUp 1.2s ease forwards;
+    opacity: 0;
+}
+
+/* Saat slide aktif, tampilkan caption */
+.carousel-item.active .carousel-caption {
+    opacity: 1;
+    animation: fadeInUp 1.2s ease forwards;
+}
+
+/* Animasi teks halus */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-50%);
+    }
+}
+
+/* Tombol CTA */
+#hero .btn {
+    border-radius: 50px;
+    padding: 0.7rem 2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#hero .btn-primary {
+    background-color: #FF5722;
+    border: none;
+}
+
+#hero .btn-primary:hover {
+    background-color: #b13b18;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(146, 42, 4, 0.3);
+}
+
+#hero .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #FF5722 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Carousel Controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    padding: 1rem;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: #fff;
+}
+
+/* Indicator styling */
+.carousel-indicators [data-bs-target] {
+    background-color: #fff;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.carousel-indicators .active {
+    opacity: 1;
+    background-color: #FF5722;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    #hero h1 {
+        font-size: 1.7rem;
+    }
+
+    #hero p {
+        font-size: 1rem;
+    }
+
+    #hero .btn {
+        padding: 0.6rem 1.4rem;
+    }
+}
+
+/* ===== BUTTON STYLE ===== */
+.btn-main {
+    background-color: #FF5722;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.7rem 2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn-main:hover {
+    background-color: #b13b18;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(146, 42, 4, 0.3);
+}
+
+
+/* ===== DOKTER SLIDER SECTION ===== */
+.text-main {
+    color: #FF5722;
+}
+
+.doctor-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.doctor-card img {
+    height: 400px;
+    object-fit: cover;
+    border-bottom: 4px solid #FF5722;
+}
+
+.doctor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-card ul {
+    text-align: left;
+    padding-left: 1.5rem;
+}
+
+.doctor-card li {
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+}
+
+.doctor-card .bi-check-circle-fill {
+    font-size: 0.8rem;
+}
+
+
+.swiper {
+    padding-bottom: 60px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #FF5722 !important;
+    transition: all 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    color: #b13b18 !important;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #FF5722 !important;
+}
+
+
+/* ======= LAYANAN UNGGULAN STYLE ======= */
+.text-orange {
+    color: #FF7A00 !important;
+}
+
+.text-blue {
+    color: #0A3D62 !important;
+}
+
+.service-card {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 122, 0, 0.1), rgba(255, 122, 0, 0.3));
+    transition: all 0.5s ease;
+    z-index: 0;
+}
+
+.service-card:hover::before {
+    top: 0;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(255, 122, 0, 0.2);
+}
+
+.icon-wrapper {
+    background-color: rgba(255, 122, 0, 0.1);
+    color: #FF7A00;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+/* Tombol utama */
+.btn-main {
+    background-color: #FF7A00;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-main:hover {
+    background-color: #b14e00;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3);
+}
+
+.text-orange {
+    color: #ff7b00;
+}
+
+#fasilitas {
+    background: linear-gradient(180deg, #fff 0%, #f8f9fa 100%);
+}
+
+.fasilitas-img {
+    height: 500px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.carousel-item:hover .fasilitas-img {
+    transform: scale(1.05);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 60%;
+}
+
+.carousel-control-prev:hover span,
+.carousel-control-next:hover span {
+    background-color: #ff7b00 !important;
+}
+
+.card {
+    border-radius: 20px;
+}
+
+
+.text-orange {
+    color: #ff7b00;
+}
+
+.btn-orange {
+    background-color: #ff7b00;
+    color: white;
+    transition: 0.3s;
+}
+
+.btn-orange:hover {
+    background-color: #e96b00;
+    color: white;
+}
+
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-item {
+    transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+.text-orange {
+    color: #ff7b00;
+}
+
+.btn-orange {
+    background-color: #ff7b00;
+    color: white;
+    transition: 0.3s;
+}
+
+.btn-orange:hover {
+    background-color: #e96b00;
+    color: white;
+}
+
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.map-container iframe {
+    border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+    .map-container {
+        margin-top: 1.5rem;
+    }
+}
+
+.footer {
+    background: #111827;
+}
+
+.text-orange {
+    color: #ff7b00;
+}
+
+.footer-link {
+    color: #bbb;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #ff7b00;
+    text-decoration: none;
+    padding-left: 4px;
+}
+
+.social-link {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-link:hover {
+    color: #ff7b00 !important;
+    transform: translateY(-3px);
+}
+
+hr {
+    opacity: 0.2;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        text-align: center;
+    }
+
+    .footer .social-link {
+        font-size: 1.5rem;
+    }
+}
+
+
+/* ===== PROFIL DOKTER ===== */
+#profil-dokter .card {
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+#profil-dokter h3 {
+    font-size: 1.6rem;
+}
+
+#profil-dokter h6 {
+    font-size: 0.95rem;
+    color: var(--main-color);
+}
+
+#profil-dokter p,
+#profil-dokter li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+#profil-dokter .form-control {
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+#profil-dokter .form-control:focus {
+    border-color: var(--main-color);
+    box-shadow: 0 0 6px rgba(0, 168, 181, 0.3);
+}
+
+#profil-dokter .text-main {
+    color: var(--accent-color) !important;
+}
+
+#asuransi-rekanan img {
+    filter: grayscale(100%);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+#asuransi-rekanan img:hover {
+    filter: none;
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* ===== BERITA & INFORMASI ===== */
+#berita .card img {
+    height: 240px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+#berita .card:hover img {
+    transform: scale(1.05);
+}
+
+.bg-orange {
+    background-color: #ff7b00 !important;
+    color: #fff;
+}
+
+.btn-outline-orange {
+    border: 2px solid #ff7b00;
+    color: #ff7b00;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-orange:hover {
+    background-color: #ff7b00;
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+
+.text-orange {
+    color: #f58220;
+}
+
+.timeline {
+    position: relative;
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 0;
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: #f58220;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: -10px;
+    background-color: white;
+    border: 4px solid #f58220;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline-item.left {
+    left: 0;
+}
+
+.timeline-item.right {
+    left: 50%;
+}
+
+.timeline-item.right::after {
+    left: -10px;
+}
+
+.timeline-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-content h3 {
+    color: #f58220;
+    font-weight: bold;
+}
+
+.timeline-content p {
+    margin-bottom: 0;
+    color: #555;
+}
+
+@media screen and (max-width: 768px) {
+    .timeline::after {
+        left: 31px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+
+    .timeline-item.right {
+        left: 0%;
+    }
+
+    .timeline-item::after {
+        left: 15px;
+    }
+}
+
+.text-orange {
+    color: #f58220;
+}
+
+.mission-list li {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mission-list li:hover {
+    transform: translateX(5px);
+}
+
+.mission-list .icon {
+    width: 30px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .mission-list {
+        padding: 20px;
+    }
+}
+
+.text-orange {
+    color: #f58220;
+}
+
+.image-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+img.img-fluid {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+img.img-fluid:hover {
+    transform: scale(1.02);
+}
+
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.icon-wrapper {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .icon-wrapper {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.btn-outline-orange {
+    border: 2px solid #f58220;
+    color: #f58220;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-orange:hover {
+    background-color: #f58220;
+    color: white;
+}
+
+.berita-content p {
+    line-height: 1.8;
+    color: #555;
+}
+
+.berita-content img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.bg-orange {
+    background-color: #f58220 !important;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: 30vh !important;
+    }
+}
