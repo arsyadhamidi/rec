@@ -115,19 +115,32 @@
 
                             @if ($today->lt($mulai))
                                 <div class="alert alert-info mt-4 rounded-3 shadow-sm">
-                                    <strong>Informasi:</strong> Dokter akan cuti
+                                    <strong>Informasi:</strong> Dokter akan melakukan
+                                    @if ($cuti->status == '1')
+                                        <b>Cuti</b>
+                                    @elseif($cuti->status == '2')
+                                        <b>Pendidikan Lanjutan</b>
+                                    @elseif($cuti->status == '3')
+                                        <b>Ibadah</b>
+                                    @else
+                                        <b>Tidak Ditemukan</b>
+                                    @endif
                                     dari <b>{{ $mulai->translatedFormat('l, d F Y') }}</b>
                                     sampai <b>{{ $selesai->translatedFormat('l, d F Y') }}</b>.
                                 </div>
                             @elseif ($today->between($mulai, $selesai))
                                 <div class="alert alert-warning mt-4 rounded-3 shadow-sm">
-                                    <strong>Informasi:</strong> Dokter sedang cuti
+                                    <strong>Informasi:</strong> Dokter sedang melakukan
+                                    @if ($cuti->status == '1')
+                                        <b>Cuti</b>
+                                    @elseif($cuti->status == '2')
+                                        <b>Pendidikan Lanjutan</b>
+                                    @elseif($cuti->status == '3')
+                                        <b>Ibadah</b>
+                                    @else
+                                        <b>Tidak Ditemukan</b>
+                                    @endif
                                     sampai <b>{{ $selesai->translatedFormat('l, d F Y') }}</b>.
-                                </div>
-                            @else
-                                <div class="alert alert-success mt-4 rounded-3 shadow-sm">
-                                    <strong>Informasi:</strong> Dokter aktif kembali
-                                    sejak <b>{{ $selesai->addDay()->translatedFormat('l, d F Y') }}</b>.
                                 </div>
                             @endif
                         @endif

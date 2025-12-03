@@ -48,6 +48,7 @@
                                         <th>Dokter</th>
                                         <th>Mulai</th>
                                         <th>Selesai</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -58,6 +59,17 @@
                                             <td>{{ $cuti->nm_dokter ?? '-' }}</td>
                                             <td>{{ $cuti->tgl_mulai ?? '-' }}</td>
                                             <td>{{ $cuti->tgl_selesai ?? '-' }}</td>
+                                            <td>
+                                                @if ($cuti->status == '1')
+                                                    Cuti
+                                                @elseif($cuti->status == '2')
+                                                    Pendidikan Lanjutan
+                                                @elseif($cuti->status == '3')
+                                                    Ibadah
+                                                @else
+                                                    Tidak Ditemukan
+                                                @endif
+                                            </td>
                                             <td class="d-flex">
                                                 <button type="button"
                                                         class="btn btn-outline-primary"
@@ -86,7 +98,7 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="row">
-                                                                        <div class="col-lg-6">
+                                                                        <div class="col-lg-3">
                                                                             <div class="mb-3">
                                                                                 <label>Tanggal Mulai <span class="text-danger">*</span></label>
                                                                                 <input type="text"
@@ -100,7 +112,7 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="col-lg-6">
+                                                                        <div class="col-lg-3">
                                                                             <div class="mb-3">
                                                                                 <label>Tanggal Selesai <span class="text-danger">*</span></label>
                                                                                 <input type="text"
@@ -110,6 +122,33 @@
                                                                                        id="tglSelesaiEdit{{ $cuti->id ?? '' }}">
                                                                                 @error('tgl_selesai')
                                                                                     <div class="invalid-feedback">{{ $message }}</div>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-lg-6">
+                                                                            <div class="mb-3">
+                                                                                <label>
+                                                                                    Status
+                                                                                    <span class="text-danger">*</span>
+                                                                                </label>
+                                                                                <select name="status"
+                                                                                        class="form-control @error('status') is-invalid @enderror"
+                                                                                        id="selectedStatusEdit{{ $loop->iteration }}"
+                                                                                        style="width: 100%">
+                                                                                    <option value=""
+                                                                                            selected>Pilih Status</option>
+                                                                                    <option value="1"
+                                                                                            {{ old('status', $cuti->status) == '1' ? 'selected' : '' }}>Cuti</option>
+                                                                                    <option value="2"
+                                                                                            {{ old('status', $cuti->status) == '2' ? 'selected' : '' }}>Pendidikan Lanjutan</option>
+                                                                                    <option value="3"
+                                                                                            {{ old('status', $cuti->status) == '3' ? 'selected' : '' }}>Ibadah</option>
+                                                                                </select>
+                                                                                @error('status')
+                                                                                    <div class="invalid-feedback">
+                                                                                        {{ $message }}
+                                                                                    </div>
                                                                                 @enderror
                                                                             </div>
                                                                         </div>
@@ -175,7 +214,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-3">
                                 <div class="mb-3">
                                     <label>Tanggal Mulai
                                         <span class="text-danger">*</span>
@@ -192,7 +231,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-3">
                                 <div class="mb-3">
                                     <label>Tanggal Selesai
                                         <span class="text-danger">*</span>
@@ -203,6 +242,32 @@
                                            value="{{ old('tgl_selesai', \Carbon\Carbon::now()->format('Y-m-d')) }}"
                                            id="tglSelesaiTambah">
                                     @error('tgl_selesai')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label>
+                                        Status
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <select name="status"
+                                            class="form-control @error('status') is-invalid @enderror"
+                                            id="selectedStatusTambah"
+                                            style="width: 100%">
+                                        <option value=""
+                                                selected>Pilih Status</option>
+                                        <option value="1"
+                                                {{ old('status') == '1' ? 'selected' : '' }}>Cuti</option>
+                                        <option value="2"
+                                                {{ old('status') == '2' ? 'selected' : '' }}>Pendidikan Lanjutan</option>
+                                        <option value="3"
+                                                {{ old('status') == '3' ? 'selected' : '' }}>Ibadah</option>
+                                    </select>
+                                    @error('status')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
@@ -243,6 +308,14 @@
             language: "id"
         }).on('show', function() {
             $('.datepicker').hide().fadeIn(200);
+        });
+
+        $('#selectedStatusTambah').select2({
+            theme: 'bootstrap4',
+        });
+
+        $('select[id^="selectedStatusEdit"]').select2({
+            theme: 'bootstrap4'
         });
     </script>
     <script>

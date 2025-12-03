@@ -548,6 +548,7 @@ class AdminDokterController extends Controller
                 'cuti_dokter.dokter_id',
                 'cuti_dokter.tgl_mulai',
                 'cuti_dokter.tgl_selesai',
+                'cuti_dokter.status',
                 'cuti_dokter.is_deleted',
                 'dokter.nm_dokter',
             ])
@@ -570,10 +571,12 @@ class AdminDokterController extends Controller
     {
         $request->validate([
             'dokter_id'   => 'required',
+            'status'   => 'required',
             'tgl_mulai'   => 'required|date',
             'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
         ], [
             'dokter_id.required'   => 'Silakan pilih dokter yang akan mengambil cuti.',
+            'status.required'   => 'Silahkan pilih Status dokter yang akan mengambil cuti.',
             'tgl_mulai.required'   => 'Tanggal mulai cuti harus diisi.',
             'tgl_mulai.date'       => 'Format tanggal mulai tidak valid.',
             'tgl_selesai.required' => 'Tanggal selesai cuti harus diisi.',
@@ -588,6 +591,7 @@ class AdminDokterController extends Controller
             'dokter_id' => $request->dokter_id,
             'tgl_mulai' => $request->tgl_mulai,
             'tgl_selesai' => $request->tgl_selesai,
+            'status' => $request->status,
             'created_at' => $carbons,
             'created_by' => $users->name ?? 'system',
             'is_deleted' => '1',
@@ -609,7 +613,9 @@ class AdminDokterController extends Controller
         $request->validate([
             'tgl_mulai'   => 'required|date',
             'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
+            'status'   => 'required',
         ], [
+            'status.required'   => 'Silahkan pilih Status dokter yang akan mengambil cuti.',
             'tgl_mulai.required'   => 'Tanggal mulai cuti harus diisi.',
             'tgl_mulai.date'       => 'Format tanggal mulai tidak valid.',
             'tgl_selesai.required' => 'Tanggal selesai cuti harus diisi.',
@@ -625,6 +631,7 @@ class AdminDokterController extends Controller
         $cutis->update([
             'tgl_mulai' => $request->tgl_mulai,
             'tgl_selesai' => $request->tgl_selesai,
+            'status' => $request->status,
             'updated_at' => $carbons,
             'updated_by' => $users->name ?? 'system',
         ]);
