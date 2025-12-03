@@ -207,7 +207,7 @@
                                 <div class="card-body text-center">
                                     <h5 class="card-title fw-bold mb-1">{{ $dokter->nm_dokter ?? '-' }}</h5>
                                     <p class="text-muted mb-2">{{ $dokter->nama_spesialis ?? '-' }}</p>
-                                    <p class="text-muted mb-2">{{ $dokter->keahlian ?? '-' }}</p>
+                                    <p class="text-muted mb-2">{!! \Illuminate\Support\Str::limit($dokter->tentang ? $dokter->tentang : '-', 100) !!}</p>
                                     <a href="{{ route('landing.profildokter', $dokter->slug ?? '') }}"
                                        class="btn btn-main btn-sm mt-2">Lihat Profil</a>
                                 </div>
