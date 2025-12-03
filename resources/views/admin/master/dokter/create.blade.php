@@ -22,7 +22,8 @@
         <div class="col-lg-12">
             <div class="mb-3">
                 <form action="{{ route('admin-dokter.store') }}"
-                      method="POST" enctype="multipart/form-data">
+                      method="POST"
+                      enctype="multipart/form-data">
                     @csrf
                     <div class="card">
                         <div class="card-body">
@@ -199,6 +200,25 @@
                                     </div>
                                 </div>
 
+                                {{--  Kompetensi  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Kompetensi
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="keahlian"
+                                                  class="form-control @error('keahlian') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan"
+                                                  id="keahlianTextTambah">{{ old('keahlian') }}</textarea>
+                                        @error('keahlian')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 {{--  Pendidikan  --}}
                                 <div class="col-lg-12">
                                     <div class="mb-3">
@@ -208,8 +228,66 @@
                                         <textarea name="pendidikan"
                                                   class="form-control @error('pendidikan') is-invalid @enderror"
                                                   rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('pendidikan') }}</textarea>
+                                                  placeholder="Masukan keterangan"
+                                                  id="pendidikanTextTambah">{{ old('pendidikan') }}</textarea>
                                         @error('pendidikan')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{--  Fellowship  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Fellowship
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="fellowship"
+                                                  class="form-control @error('fellowship') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan"
+                                                  id="fellowshipTextTambah">{{ old('fellowship') }}</textarea>
+                                        @error('fellowship')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{--  Pengalaman  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Pengalaman
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="pengalaman"
+                                                  class="form-control @error('pengalaman') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan"
+                                                  id="pengalamanTextTambah">{{ old('pengalaman') }}</textarea>
+                                        @error('pengalaman')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{--  Organisasi  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Organisasi
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="organisasi"
+                                                  class="form-control @error('organisasi') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan"
+                                                  id="organisasiTextTambah">{{ old('organisasi') }}</textarea>
+                                        @error('organisasi')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -226,7 +304,8 @@
                                         <textarea name="alamat"
                                                   class="form-control @error('alamat') is-invalid @enderror"
                                                   rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('alamat') }}</textarea>
+                                                  placeholder="Masukan keterangan"
+                                                  id="alamatTextTambah">{{ old('alamat') }}</textarea>
                                         @error('alamat')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -244,26 +323,9 @@
                                         <textarea name="tentang"
                                                   class="form-control @error('tentang') is-invalid @enderror"
                                                   rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('tentang') }}</textarea>
+                                                  placeholder="Masukan keterangan"
+                                                  id="tentangTextTambah">{{ old('tentang') }}</textarea>
                                         @error('tentang')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{--  Keahlian  --}}
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label>Keahlian
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <textarea name="keahlian"
-                                                  class="form-control @error('keahlian') is-invalid @enderror"
-                                                  rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('keahlian') }}</textarea>
-                                        @error('keahlian')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -339,6 +401,14 @@
             $('#selectedJenisKelamin').select2({
                 theme: 'bootstrap4',
             });
+
+            CKEDITOR.replace('keahlianTextTambah');
+            CKEDITOR.replace('pendidikanTextTambah');
+            CKEDITOR.replace('fellowshipTextTambah');
+            CKEDITOR.replace('pengalamanTextTambah');
+            CKEDITOR.replace('organisasiTextTambah');
+            CKEDITOR.replace('alamatTextTambah');
+            CKEDITOR.replace('tentangTextTambah');
         });
     </script>
 @endpush

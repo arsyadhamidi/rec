@@ -200,6 +200,24 @@
                                     </div>
                                 </div>
 
+                                {{--  Kompetensi  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Kompetensi
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="keahlian"
+                                                  class="form-control @error('keahlian') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan" id="keahlianTextEdit">{{ old('keahlian', $dokters->keahlian ?? '-') }}</textarea>
+                                        @error('keahlian')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 {{--  Pendidikan  --}}
                                 <div class="col-lg-12">
                                     <div class="mb-3">
@@ -209,8 +227,63 @@
                                         <textarea name="pendidikan"
                                                   class="form-control @error('pendidikan') is-invalid @enderror"
                                                   rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('pendidikan', $dokters->pendidikan ?? '-') }}</textarea>
+                                                  placeholder="Masukan keterangan"
+                                                  id="pendidikanTextEdit">{{ old('pendidikan', $dokters->pendidikan ?? '-') }}</textarea>
                                         @error('pendidikan')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{--  Fellowship  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Fellowship
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="fellowship"
+                                                  class="form-control @error('fellowship') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan" id="fellowshipTextEdit">{{ old('fellowship', $dokters->fellowship ?? '-') }}</textarea>
+                                        @error('fellowship')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{--  Pengalaman  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Pengalaman
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="pengalaman"
+                                                  class="form-control @error('pengalaman') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan" id="pengalamanTextEdit">{{ old('pengalaman', $dokters->pengalaman ?? '-') }}</textarea>
+                                        @error('pengalaman')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{--  Organisasi  --}}
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label>Organisasi
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="organisasi"
+                                                  class="form-control @error('organisasi') is-invalid @enderror"
+                                                  rows="5"
+                                                  placeholder="Masukan keterangan" id="organisasiTextEdit">{{ old('organisasi', $dokters->organisasi ?? '-') }}</textarea>
+                                        @error('organisasi')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -227,7 +300,7 @@
                                         <textarea name="alamat"
                                                   class="form-control @error('alamat') is-invalid @enderror"
                                                   rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('alamat', $dokters->alamat ?? '-') }}</textarea>
+                                                  placeholder="Masukan keterangan" id="alamatTextEdit">{{ old('alamat', $dokters->alamat ?? '-') }}</textarea>
                                         @error('alamat')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -245,26 +318,8 @@
                                         <textarea name="tentang"
                                                   class="form-control @error('tentang') is-invalid @enderror"
                                                   rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('tentang', $dokters->tentang ?? '-') }}</textarea>
+                                                  placeholder="Masukan keterangan" id="tentangTextEdit">{{ old('tentang', $dokters->tentang ?? '-') }}</textarea>
                                         @error('tentang')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{--  Keahlian  --}}
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label>Keahlian
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <textarea name="keahlian"
-                                                  class="form-control @error('keahlian') is-invalid @enderror"
-                                                  rows="5"
-                                                  placeholder="Masukan keterangan">{{ old('keahlian', $dokters->keahlian ?? '-') }}</textarea>
-                                        @error('keahlian')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -340,6 +395,14 @@
             $('#selectedJenisKelamin').select2({
                 theme: 'bootstrap4',
             });
+
+            CKEDITOR.replace('keahlianTextEdit');
+            CKEDITOR.replace('pendidikanTextEdit');
+            CKEDITOR.replace('fellowshipTextEdit');
+            CKEDITOR.replace('pengalamanTextEdit');
+            CKEDITOR.replace('organisasiTextEdit');
+            CKEDITOR.replace('alamatTextEdit');
+            CKEDITOR.replace('tentangTextEdit');
         });
     </script>
 @endpush

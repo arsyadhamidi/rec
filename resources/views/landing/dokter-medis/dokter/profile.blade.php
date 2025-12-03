@@ -13,192 +13,217 @@
         </div>
     </section>
     <section id="profil-dokter"
-             class="py-5 my-5"
-             style="background-color: var(--light-bg);">
-        <div class="container my-5">
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+             class="py-5"
+             style="background-color: #f7f9fc;">
+        <div class="container">
 
-                <div class="row g-0">
+            <!-- CARD HEADER PROFIL -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4"
+                 style="background: #ffffff;">
+
+                <div class="row align-items-center">
+
                     <!-- Foto Dokter -->
-                    <div class="col-md-4 bg-white text-center d-flex align-items-center justify-content-center p-4">
-                        @if ($dokters->foto_dokter)
-                            <img src="{{ asset('storage/' . $dokters->foto_dokter) }}"
-                                 alt="{{ $dokters->nm_dokter ?? '-' }}"
-                                 class="rounded-circle shadow-sm img-fluid"
-                                 style="width: 240px; height: 240px; object-fit: cover;">
-                        @else
-                            <img src="{{ asset('images/foto-profile.png') }}"
-                                 alt="{{ $dokters->nm_dokter ?? '-' }}"
-                                 class="rounded-circle shadow-sm img-fluid"
-                                 style="width: 240px; height: 240px; object-fit: cover;">
-                        @endif
+                    <div class="col-md-3 text-center mb-3">
+                        <div class="rounded-circle mx-auto shadow"
+                             style="
+                            width: 160px;
+                            height: 160px;
+                            overflow: hidden;
+                            border: 4px solid #fff;
+                         ">
+                            <img src="{{ $dokters->foto_dokter ? asset('storage/' . $dokters->foto_dokter) : asset('images/foto-profile.png') }}"
+                                 class="img-fluid"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
                     </div>
 
                     <!-- Info Dokter -->
-                    <div class="col-md-8 bg-white">
-                        <div class="card-body p-4">
-                            <h3 class="fw-bold mb-1 text-dark">{{ $dokters->nm_dokter }}</h3>
-                            <h6 class="text-main mb-3 fw-semibold">
-                                {{ strtoupper($dokters->nama_spesialis ?? 'Spesialis Tidak Tersedia') }}
-                            </h6>
+                    <div class="col-md-9">
+                        <h3 class="fw-bold mb-1 text-dark">{{ $dokters->nm_dokter }}</h3>
 
-                            <ul class="list-unstyled small text-muted mb-3">
-                                <li><i class="bi bi-geo-alt text-main me-2"></i>
-                                    <strong>Tempat, Tanggal Lahir:</strong>
-                                    {{ $dokters->tmp_lahir }},
-                                    {{ \Carbon\Carbon::parse($dokters->tgl_lahir)->translatedFormat('d M Y') }}
-                                </li>
-                                <li><i class="bi bi-gender-ambiguous text-main me-2"></i>
-                                    <strong>Jenis Kelamin:</strong>
-                                    {{ $dokters->jk == '1' ? 'Laki-laki' : 'Perempuan' }}
-                                </li>
-                                {{--  <li><i class="bi bi-house-door text-main me-2"></i>
-                                    <strong>Alamat:</strong> {{ $dokters->alamat }}
-                                </li>  --}}
-                            </ul>
+                        <p class="text-uppercase fw-semibold mb-2"
+                           style="color: #f58220; letter-spacing: 0.5px;">
+                            {{ $dokters->nama_spesialis ?? 'SPESIALIS' }}
+                        </p>
 
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <h6 class="fw-semibold text-main">Pendidikan</h6>
-                                    <p class="text-dark mb-0">{{ $dokters->pendidikan }}</p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <h6 class="fw-semibold text-main">Keahlian</h6>
-                                    <p class="text-dark mb-0">{{ $dokters->keahlian }}</p>
-                                </div>
-                            </div>
+                        <div class="mt-3">
+                            <p class="fw-bold text-dark mb-1">Kompetensi:</p>
+                            <p class="text-muted">{!! $dokters->keahlian ?? '-' !!}</p>
+
+                            <p class="fw-bold text-dark mb-1">Pendidikan:</p>
+                            <p class="text-muted">{!! $dokters->pendidikan ?? '-' !!}</p>
                         </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TAB NAVIGATION -->
+            <ul class="nav nav-tabs mb-4"
+                id="dokterTab">
+                @php
+                    $tabs = [
+                        'tentang' => 'Tentang',
+                        'keahlian' => 'Kompetensi',
+                        'pendidikan' => 'Pendidikan',
+                        'fellowship' => 'Fellowship',
+                        'pengalaman' => 'Pengalaman',
+                        'organisasi' => 'Organisasi',
+                        'jadwal' => 'Jadwal',
+                    ];
+                @endphp
+
+                @foreach ($tabs as $id => $label)
+                    <li class="nav-item">
+                        <button class="nav-link {{ $loop->first ? 'active' : '' }}"
+                                data-bs-toggle="tab"
+                                data-bs-target="#{{ $id }}"
+                                style="
+                                font-weight: 600;
+                                color: #4a6bf2;
+                                border: none;
+                                padding: 10px 18px;
+                            ">
+                            {{ $label }}
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
+
+            <!-- TAB CONTENT -->
+            <div class="tab-content">
+
+                <!-- Tentang -->
+                <div class="tab-pane fade show active"
+                     id="tentang">
+                    <div class="card shadow-sm border-0 rounded-4 p-4 mb-4">
+                        <h5 class="fw-bold text-main mb-3">Tentang Dokter</h5>
+                        <p class="text-muted"
+                           style="text-align: justify;">
+                            {!! $dokters->tentang !!}
+                        </p>
+
+                        {{-- Informasi Cuti --}}
+                        @if ($cuti)
+                            @php
+                                \Carbon\Carbon::setLocale('id');
+                                $today = \Carbon\Carbon::today();
+                                $mulai = \Carbon\Carbon::parse($cuti->tgl_mulai);
+                                $selesai = \Carbon\Carbon::parse($cuti->tgl_selesai);
+                            @endphp
+
+                            @if ($today->lt($mulai))
+                                <div class="alert alert-info mt-4 rounded-3 shadow-sm">
+                                    <strong>Informasi:</strong> Dokter akan cuti
+                                    dari <b>{{ $mulai->translatedFormat('l, d F Y') }}</b>
+                                    sampai <b>{{ $selesai->translatedFormat('l, d F Y') }}</b>.
+                                </div>
+                            @elseif ($today->between($mulai, $selesai))
+                                <div class="alert alert-warning mt-4 rounded-3 shadow-sm">
+                                    <strong>Informasi:</strong> Dokter sedang cuti
+                                    sampai <b>{{ $selesai->translatedFormat('l, d F Y') }}</b>.
+                                </div>
+                            @else
+                                <div class="alert alert-success mt-4 rounded-3 shadow-sm">
+                                    <strong>Informasi:</strong> Dokter aktif kembali
+                                    sejak <b>{{ $selesai->addDay()->translatedFormat('l, d F Y') }}</b>.
+                                </div>
+                            @endif
+                        @endif
                     </div>
                 </div>
 
-                <!-- Tentang Dokter -->
-                <div class="card-body bg-light p-4">
-                    <h5 class="fw-bold text-main mb-3">Tentang Dokter</h5>
-                    <p class="text-muted"
-                       style="text-align: justify;">
-                        {{ $dokters->tentang }}
-                    </p>
-
-                    @if ($cuti)
-                        @php
-
-                            \Carbon\Carbon::setLocale('id');
-
-                            $today = \Carbon\Carbon::today();
-                            $tglMulai = \Carbon\Carbon::parse($cuti->tgl_mulai);
-                            $tglSelesai = \Carbon\Carbon::parse($cuti->tgl_selesai);
-                        @endphp
-
-                        {{-- Dokter AKAN CUTI --}}
-                        @if ($today->lt($tglMulai))
-                            <div class="alert alert-info mt-4 shadow-sm border-0 rounded-3">
-                                <i class="bi bi-calendar-event-fill me-2"></i>
-                                <strong>Informasi:</strong> Dokter akan menjalani <span class="fw-bold text-primary">cuti</span>
-                                <br>
-                                <span class="ms-4">
-                                    mulai tanggal <strong>{{ $tglMulai->translatedFormat('l, d F Y') }}</strong>
-                                    sampai <strong>{{ $tglSelesai->translatedFormat('l, d F Y') }}</strong>.
-                                </span>
-                            </div>
-
-                            {{-- Dokter SEDANG CUTI --}}
-                        @elseif ($today->between($tglMulai, $tglSelesai))
-                            <div class="alert alert-warning mt-4 shadow-sm border-0 rounded-3">
-                                <i class="bi bi-calendar-x-fill me-2"></i>
-                                <strong>Informasi:</strong> Dokter sedang <span class="fw-bold text-danger">cuti</span>
-                                <br>
-                                <span class="ms-4">
-                                    dari tanggal <strong>{{ $tglMulai->translatedFormat('l, d F Y') }}</strong>
-                                    sampai <strong>{{ $tglSelesai->translatedFormat('l, d F Y') }}</strong>.
-                                </span>
-                            </div>
-
-                            {{-- Dokter SUDAH AKTIF --}}
-                        @elseif ($today->gt($tglSelesai))
-                            <div class="alert alert-success mt-4 shadow-sm border-0 rounded-3">
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                                <strong>Informasi:</strong> Dokter telah kembali praktek
-                                <br>
-                                <span class="ms-4">
-                                    sejak <strong>{{ $tglSelesai->addDay()->translatedFormat('l, d F Y') }}</strong>.
-                                </span>
-                            </div>
-                        @endif
-                    @endif
-
-
-
-                    <!-- Jadwal Praktik -->
-                    @if ($jadwals && count($jadwals) > 0)
-                        <div class="mt-4">
-                            <h6 class="fw-bold text-main mb-3">Jadwal Praktik</h6>
-                            <div class="table-responsive">
-                                <table class="table table-bordered align-middle"
-                                       style="font-size: 0.95rem;">
-                                    <thead class="table-light">
-                                        <tr class="text-center">
-                                            <th>Hari</th>
-                                            <th>Jam Mulai</th>
-                                            <th>Jam Selesai</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($jadwals as $jadwal)
-                                            <tr class="text-center">
-                                                <td>
-                                                    @switch($jadwal->hari_dokter)
-                                                        @case('1')
-                                                            Senin
-                                                        @break
-
-                                                        @case('2')
-                                                            Selasa
-                                                        @break
-
-                                                        @case('3')
-                                                            Rabu
-                                                        @break
-
-                                                        @case('4')
-                                                            Kamis
-                                                        @break
-
-                                                        @case('5')
-                                                            Jumat
-                                                        @break
-
-                                                        @case('6')
-                                                            Sabtu
-                                                        @break
-
-                                                        @case('7')
-                                                            Minggu
-                                                        @break
-
-                                                        @default
-                                                            -
-                                                    @endswitch
-                                                </td>
-                                                <td>
-                                                    {{ $jadwal->jam_mulai ? \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') : '-' }}
-                                                </td>
-                                                <td>
-                                                    {{ $jadwal->jam_selesai ? \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                <!-- Loop Konten Tab -->
+                @foreach ($tabs as $id => $label)
+                    @if ($id !== 'tentang' && $id !== 'jadwal')
+                        <div class="tab-pane fade"
+                             id="{{ $id }}">
+                            <div class="card shadow-sm border-0 rounded-4 p-4 mb-4">
+                                <h5 class="fw-bold text-main mb-3">{{ $label }}</h5>
+                                <p class="text-muted">{!! $dokters->$id ?? '-' !!}</p>
                             </div>
                         </div>
                     @endif
+                @endforeach
+
+                <!-- Jadwal -->
+                <div class="tab-pane fade"
+                     id="jadwal">
+                    <div class="card shadow-sm border-0 rounded-4 p-4 mb-4">
+                        <h5 class="fw-bold text-main mb-3">Jadwal Praktik</h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead style="background: #fff7ef;">
+                                    <tr>
+                                        <th>Hari</th>
+                                        <th>Jam Mulai</th>
+                                        <th>Jam Selesai</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($jadwals as $jadwal)
+                                        <tr>
+                                            <td>
+                                                @switch($jadwal->hari_dokter)
+                                                    @case('1')
+                                                        Senin
+                                                    @break
+
+                                                    @case('2')
+                                                        Selasa
+                                                    @break
+
+                                                    @case('3')
+                                                        Rabu
+                                                    @break
+
+                                                    @case('4')
+                                                        Kamis
+                                                    @break
+
+                                                    @case('5')
+                                                        Jumat
+                                                    @break
+
+                                                    @case('6')
+                                                        Sabtu
+                                                    @break
+
+                                                    @case('7')
+                                                        Minggu
+                                                    @break
+
+                                                    @default
+                                                        -
+                                                @endswitch
+                                            </td>
+                                            <td>{{ $jadwal->jam_mulai ? \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') : '-' }}</td>
+                                            <td>{{ $jadwal->jam_selesai ? \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') : '-' }}</td>
+                                        </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="3"
+                                                    class="text-muted py-3">Tidak ada jadwal tersedia.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
-        </div>
-    </section>
+        </section>
 
-    @include('landing.main.layanan-unggulan')
-    @include('landing.main.kerjasama')
-    @include('landing.main.kontak-lokasi')
 
-@endsection
+
+        @include('landing.main.layanan-unggulan')
+        @include('landing.main.kerjasama')
+        @include('landing.main.kontak-lokasi')
+
+    @endsection

@@ -79,7 +79,7 @@ class AdminDokterController extends Controller
         ]);
     }
 
-     public function generatepdf(Request $request)
+    public function generatepdf(Request $request)
     {
         $query = Dokter::leftJoin('spesialis', 'dokter.spesialis_id', 'spesialis.id')
             ->select([
@@ -151,44 +151,66 @@ class AdminDokterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id'     => 'required',
-            'spesialis_id' => 'required',
-            'slug'    => 'required|max:255|unique:dokter,slug',
-            'nm_dokter'    => 'required|max:200',
-            'tmp_lahir'    => 'required|max:100',
-            'tgl_lahir'    => 'required|date',
-            'jk'           => 'required',
-            'pendidikan'       => 'required|max:500',
-            'alamat'       => 'required|max:500',
-            'telp_dokter'  => 'required|max:20',
-            'tentang'      => 'required|max:1000',
-            'keahlian'     => 'required|max:1000',
-            'foto_dokter'  => 'nullable|mimes:png,jpg,jpeg|max:10248',
+            'user_id'        => 'required',
+            'spesialis_id'   => 'required',
+            'slug'           => 'required|max:255|unique:dokter,slug',
+            'nm_dokter'      => 'required|max:200',
+            'tmp_lahir'      => 'required|max:100',
+            'tgl_lahir'      => 'required|date',
+            'jk'             => 'required',
+            'pendidikan'     => 'required|max:500',
+            'alamat'         => 'required|max:500',
+            'telp_dokter'    => 'required|max:20',
+            'tentang'        => 'required|max:1000',
+            'pengalaman'     => 'required|max:1000',
+            'organisasi'     => 'required|max:1000',
+            'fellowship'     => 'required|max:1000',
+            'keahlian'       => 'required|max:1000',
+            'foto_dokter'    => 'nullable|mimes:png,jpg,jpeg|max:10248',
         ], [
-            'user_id.required'     => 'User wajib dipilih.',
-            'spesialis_id.required' => 'Spesialis wajib dipilih.',
-            'slug.required' => 'Slug wajib diisi.',
-            'slug.max' => 'Slug tidak boleh lebih dari 255 karakter.',
-            'slug.unique' => 'Slug sudah digunakan, silakan gunakan slug lain.',
-            'nm_dokter.required'    => 'Nama dokter wajib diisi.',
-            'nm_dokter.max'         => 'Nama dokter maksimal 200 karakter.',
-            'tmp_lahir.required'    => 'Tempat lahir wajib diisi.',
-            'tmp_lahir.max'         => 'Tempat lahir maksimal 100 karakter.',
-            'tgl_lahir.required'    => 'Tanggal lahir wajib diisi.',
-            'tgl_lahir.date'        => 'Format tanggal lahir tidak valid.',
-            'jk.required'           => 'Jenis kelamin wajib dipilih.',
-            'pendidikan.required'   => 'Pendidikan wajib diisi.',
-            'pendidikan.max'         => 'Pendidikan maksimal 500 karakter.',
-            'alamat.required'       => 'Alamat wajib diisi.',
-            'alamat.max'            => 'Alamat maksimal 500 karakter.',
-            'telp_dokter.required'  => 'Nomor telepon wajib diisi.',
-            'telp_dokter.max'       => 'Nomor telepon maksimal 20 karakter.',
-            'tentang.required'      => 'Bagian tentang dokter wajib diisi.',
-            'tentang.max'           => 'Bagian tentang maksimal 1000 karakter.',
-            'keahlian.required'     => 'Bagian keahlian wajib diisi.',
-            'keahlian.max'          => 'Bagian keahlian maksimal 1000 karakter.',
-            'foto_dokter.mimes'     => 'Format foto harus berupa PNG, JPG, atau JPEG.',
-            'foto_dokter.max'       => 'Ukuran foto maksimal 10MB.',
+            'user_id.required'        => 'User wajib dipilih.',
+            'spesialis_id.required'   => 'Spesialis wajib dipilih.',
+            'slug.required'           => 'Slug wajib diisi.',
+            'slug.max'                => 'Slug maksimal 255 karakter.',
+            'slug.unique'             => 'Slug sudah digunakan, silakan gunakan yang lain.',
+
+            'nm_dokter.required'      => 'Nama dokter wajib diisi.',
+            'nm_dokter.max'           => 'Nama dokter maksimal 200 karakter.',
+
+            'tmp_lahir.required'      => 'Tempat lahir wajib diisi.',
+            'tmp_lahir.max'           => 'Tempat lahir maksimal 100 karakter.',
+
+            'tgl_lahir.required'      => 'Tanggal lahir wajib diisi.',
+            'tgl_lahir.date'          => 'Tanggal lahir harus berupa format tanggal yang valid.',
+
+            'jk.required'             => 'Jenis kelamin wajib dipilih.',
+
+            'pendidikan.required'     => 'Riwayat pendidikan wajib diisi.',
+            'pendidikan.max'          => 'Riwayat pendidikan maksimal 500 karakter.',
+
+            'alamat.required'         => 'Alamat wajib diisi.',
+            'alamat.max'              => 'Alamat maksimal 500 karakter.',
+
+            'telp_dokter.required'    => 'Nomor telepon wajib diisi.',
+            'telp_dokter.max'         => 'Nomor telepon maksimal 20 karakter.',
+
+            'tentang.required'        => 'Bagian tentang dokter wajib diisi.',
+            'tentang.max'             => 'Tentang dokter maksimal 1000 karakter.',
+
+            'pengalaman.required'     => 'Pengalaman wajib diisi.',
+            'pengalaman.max'          => 'Pengalaman maksimal 1000 karakter.',
+
+            'organisasi.required'     => 'Organisasi wajib diisi.',
+            'organisasi.max'          => 'Organisasi maksimal 1000 karakter.',
+
+            'fellowship.required'     => 'Fellowship wajib diisi.',
+            'fellowship.max'          => 'Fellowship maksimal 1000 karakter.',
+
+            'keahlian.required'       => 'Keahlian wajib diisi.',
+            'keahlian.max'            => 'Keahlian maksimal 1000 karakter.',
+
+            'foto_dokter.mimes'       => 'Foto harus berupa file PNG, JPG, atau JPEG.',
+            'foto_dokter.max'         => 'Ukuran foto maksimal 10MB.',
         ]);
 
         $users = Auth::user();
@@ -212,6 +234,9 @@ class AdminDokterController extends Controller
             'alamat' => $request->alamat,
             'telp_dokter' => $request->telp_dokter,
             'tentang' => $request->tentang,
+            'pengalaman' => $request->pengalaman,
+            'fellowship' => $request->fellowship,
+            'organisasi' => $request->organisasi,
             'keahlian' => $request->keahlian,
             'foto_dokter' => $fotoDokter,
             'created_at' => $carbons,
@@ -247,44 +272,67 @@ class AdminDokterController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_id'     => 'required',
-            'spesialis_id' => 'required',
-            'slug'    => 'required|max:255|unique:dokter,slug',
-            'nm_dokter'    => 'required|max:200',
-            'tmp_lahir'    => 'required|max:100',
-            'tgl_lahir'    => 'required|date',
-            'jk'           => 'required',
-            'pendidikan'       => 'required|max:500',
-            'alamat'       => 'required|max:500',
-            'telp_dokter'  => 'required|max:20',
-            'tentang'      => 'required|max:1000',
-            'keahlian'     => 'required|max:1000',
-            'foto_dokter'  => 'nullable|mimes:png,jpg,jpeg|max:10248',
+            'user_id'       => 'required',
+            'spesialis_id'  => 'required',
+            'slug'          => 'required|max:255|unique:dokter,slug',
+            'nm_dokter'     => 'required|max:200',
+            'tmp_lahir'     => 'required|max:100',
+            'tgl_lahir'     => 'required|date',
+            'jk'            => 'required',
+            'alamat'        => 'required|max:500',
+            'telp_dokter'   => 'required|max:20',
+            'keahlian'      => 'required|max:1000',
+            'pendidikan'    => 'required|max:500',
+            'fellowship'    => 'required|max:1000',
+            'pengalaman'    => 'required|max:1000',
+            'organisasi'    => 'required|max:1000',
+            'tentang'       => 'required|max:1000',
+            'foto_dokter'   => 'nullable|mimes:png,jpg,jpeg|max:10248',
         ], [
-            'user_id.required'     => 'User wajib dipilih.',
-            'spesialis_id.required' => 'Spesialis wajib dipilih.',
-            'slug.required' => 'Slug wajib diisi.',
-            'slug.max' => 'Slug tidak boleh lebih dari 255 karakter.',
-            'slug.unique' => 'Slug sudah digunakan, silakan gunakan slug lain.',
-            'nm_dokter.required'    => 'Nama dokter wajib diisi.',
-            'nm_dokter.max'         => 'Nama dokter maksimal 200 karakter.',
-            'tmp_lahir.required'    => 'Tempat lahir wajib diisi.',
-            'tmp_lahir.max'         => 'Tempat lahir maksimal 100 karakter.',
-            'tgl_lahir.required'    => 'Tanggal lahir wajib diisi.',
-            'tgl_lahir.date'        => 'Format tanggal lahir tidak valid.',
-            'jk.required'           => 'Jenis kelamin wajib dipilih.',
-            'pendidikan.required'   => 'Pendidikan wajib diisi.',
-            'pendidikan.max'         => 'Pendidikan maksimal 500 karakter.',
-            'alamat.required'       => 'Alamat wajib diisi.',
-            'alamat.max'            => 'Alamat maksimal 500 karakter.',
-            'telp_dokter.required'  => 'Nomor telepon wajib diisi.',
-            'telp_dokter.max'       => 'Nomor telepon maksimal 20 karakter.',
-            'tentang.required'      => 'Bagian tentang dokter wajib diisi.',
-            'tentang.max'           => 'Bagian tentang maksimal 1000 karakter.',
-            'keahlian.required'     => 'Bagian keahlian wajib diisi.',
-            'keahlian.max'          => 'Bagian keahlian maksimal 1000 karakter.',
-            'foto_dokter.mimes'     => 'Format foto harus berupa PNG, JPG, atau JPEG.',
-            'foto_dokter.max'       => 'Ukuran foto maksimal 10MB.',
+            'user_id.required'        => 'User wajib dipilih.',
+            'spesialis_id.required'   => 'Spesialis wajib dipilih.',
+
+            'slug.required'           => 'Slug tidak boleh kosong.',
+            'slug.max'                => 'Slug tidak boleh lebih dari 255 karakter.',
+            'slug.unique'             => 'Slug sudah digunakan, silakan gunakan slug lain.',
+
+            'nm_dokter.required'      => 'Nama dokter tidak boleh kosong.',
+            'nm_dokter.max'           => 'Nama dokter maksimal 200 karakter.',
+
+            'tmp_lahir.required'      => 'Tempat lahir tidak boleh kosong.',
+            'tmp_lahir.max'           => 'Tempat lahir maksimal 100 karakter.',
+
+            'tgl_lahir.required'      => 'Tanggal lahir wajib diisi.',
+            'tgl_lahir.date'          => 'Format tanggal lahir tidak valid.',
+
+            'jk.required'             => 'Jenis kelamin wajib dipilih.',
+
+            'alamat.required'         => 'Alamat tidak boleh kosong.',
+            'alamat.max'              => 'Alamat maksimal 500 karakter.',
+
+            'telp_dokter.required'    => 'Nomor telepon wajib diisi.',
+            'telp_dokter.max'         => 'Nomor telepon maksimal 20 digit.',
+
+            'keahlian.required'       => 'Keahlian tidak boleh kosong.',
+            'keahlian.max'            => 'Keahlian maksimal 1000 karakter.',
+
+            'pendidikan.required'     => 'Pendidikan tidak boleh kosong.',
+            'pendidikan.max'          => 'Pendidikan maksimal 500 karakter.',
+
+            'fellowship.required'     => 'Fellowship tidak boleh kosong.',
+            'fellowship.max'          => 'Fellowship maksimal 1000 karakter.',
+
+            'pengalaman.required'     => 'Pengalaman tidak boleh kosong.',
+            'pengalaman.max'          => 'Pengalaman maksimal 1000 karakter.',
+
+            'organisasi.required'     => 'Organisasi tidak boleh kosong.',
+            'organisasi.max'          => 'Organisasi maksimal 1000 karakter.',
+
+            'tentang.required'        => 'Tentang dokter tidak boleh kosong.',
+            'tentang.max'             => 'Tentang dokter maksimal 1000 karakter.',
+
+            'foto_dokter.mimes'       => 'Foto dokter harus berupa file PNG, JPG, atau JPEG.',
+            'foto_dokter.max'         => 'Ukuran foto dokter maksimal 10MB.',
         ]);
 
         $users = Auth::user();
@@ -311,6 +359,9 @@ class AdminDokterController extends Controller
             'tgl_lahir' => $request->tgl_lahir,
             'jk' => $request->jk,
             'pendidikan' => $request->pendidikan,
+            'organisasi' => $request->organisasi,
+            'pengalaman' => $request->pengalaman,
+            'fellowship' => $request->fellowship,
             'alamat' => $request->alamat,
             'telp_dokter' => $request->telp_dokter,
             'tentang' => $request->tentang,
