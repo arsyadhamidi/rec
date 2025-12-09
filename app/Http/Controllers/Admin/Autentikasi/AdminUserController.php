@@ -278,11 +278,6 @@ class AdminUserController extends Controller
             'waktu_dibuat' => Carbon::now(),
         ]);
 
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Anda berhasil menghapus data user registrasi baru!'
-        ]);
     }
 
 }

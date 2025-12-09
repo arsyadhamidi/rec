@@ -30,6 +30,12 @@
                     Kategori Berita
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @yield('menuKerjasama')"
+                   href="{{ route('admin-kerjasama.index') }}">
+                    Asuransi Kesehatan
+                </a>
+            </li>
         </ul>
     </div>
 </li>

@@ -555,12 +555,6 @@ hr {
     color: var(--accent-color) !important;
 }
 
-#asuransi-rekanan img {
-    filter: grayscale(100%);
-    opacity: 0.8;
-    transition: all 0.3s ease;
-}
-
 #asuransi-rekanan img:hover {
     filter: none;
     opacity: 1;

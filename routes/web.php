@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\Kehadiran\AdminSakitController;
 use App\Http\Controllers\Admin\Master\AdminDokterController;
 use App\Http\Controllers\Admin\Master\AdminJabatanController;
 use App\Http\Controllers\Admin\Master\AdminKategoriBeritaController;
+use App\Http\Controllers\Admin\Master\AdminKerjasamaController;
 use App\Http\Controllers\Admin\Master\AdminSpesialisController;
 use App\Http\Controllers\Autentikasi\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -115,6 +116,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -157,6 +159,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin
     Route::group(['middleware' => [CekLevel::class . ':1']], function () {
+
+        // Kerjasama
+        Route::get('/admin-kerjasama/index', [AdminKerjasamaController::class, 'index'])->name('admin-kerjasama.index');
+        Route::get('/admin-kerjasama/create', [AdminKerjasamaController::class, 'create'])->name('admin-kerjasama.create');
+        Route::get('/admin-kerjasama/edit/{id}', [AdminKerjasamaController::class, 'edit'])->name('admin-kerjasama.edit');
+        Route::post('/admin-kerjasama/store', [AdminKerjasamaController::class, 'store'])->name('admin-kerjasama.store');
+        Route::post('/admin-kerjasama/update/{id}', [AdminKerjasamaController::class, 'update'])->name('admin-kerjasama.update');
+        Route::post('/admin-kerjasama/destroy/{id}', [AdminKerjasamaController::class, 'destroy'])->name('admin-kerjasama.destroy');
 
         // Berita
         Route::get('/admin-berita/index', [AdminBeritaController::class, 'index'])->name('admin-berita.index');

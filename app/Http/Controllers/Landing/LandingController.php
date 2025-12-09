@@ -7,6 +7,7 @@ use App\Models\Berita;
 use App\Models\CutiDokter;
 use App\Models\Dokter;
 use App\Models\JadwalDokter;
+use App\Models\Kerjasama;
 use App\Models\Spesialis;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -53,9 +54,15 @@ class LandingController extends Controller
             ->orderBy('berita.id', 'desc')
             ->get(3);
 
+
+        $kerjas = Kerjasama::where('is_deleted', '1')
+            ->orderBy('id', 'asc')
+            ->get();
+
         return view('landing.main.index', [
             'dokters' => $dokters,
             'beritas' => $beritas,
+            'kerjas' => $kerjas,
         ]);
     }
 
